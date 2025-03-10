@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import sdk from '@stackblitz/sdk';
@@ -15,15 +15,21 @@ export class EditorComponent implements OnInit {
   projectName = 'my-stackblitz-project';
   stackblitzUrl: SafeResourceUrl;
   stackblitzData: any = {};
+  deviceHeight: number = 0;
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {
     this.stackblitzUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       'https://stackblitz.com/edit/stackblitz-starters-pa68qm8s?embed=1&file=package.json'
     );
   }
+  @HostListener('window:resize', ['$event'])
+  updateHeight() {
+    this.deviceHeight = window.innerHeight;
+  }
 
   ngOnInit() {
     this.loadProject();
+    this.updateHeight();
   }
 
   loadProject() {
@@ -40,6 +46,7 @@ export class EditorComponent implements OnInit {
 
             sdk.embedProject('editor-container', this.stackblitzData, {
               forceEmbedLayout: true,
+              height: this.deviceHeight,
               openFile: 'src/main.ts', // Open a specific file for clarity
             });
           } else {
@@ -59,6 +66,7 @@ export class EditorComponent implements OnInit {
     sdk
       .embedProjectId('editor-container', 'stackblitz-starters-pa68qm8s', {
         forceEmbedLayout: true,
+        height: this.deviceHeight,
         openFile: 'package.json',
       })
       .then((editor) => {

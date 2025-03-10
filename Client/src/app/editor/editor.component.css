@@ -1,7 +1,8 @@
 #editor-container {
-  text-align: center;
-  margin-top: 20px;
   width: 100%;
+  height: 95vh; /* Adjust as needed */
+  min-height: 600px; /* Prevent it from being too small */
+  border: 1px solid #ccc; /* Just to visualize it */
 }
 
 
@@ -10,15 +11,4 @@ button {
   padding: 8px 16px;
   font-size: 16px;
   cursor: pointer;
-}
-#editor-container html, #editor-container body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-#editor-container {
-  flex-grow: 1; /* Makes it fill available space */
 }
