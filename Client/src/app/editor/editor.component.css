@@ -1,14 +1,24 @@
-.editor-container {
+#editor-container {
   text-align: center;
   margin-top: 20px;
-  /* width: 100%;
-  height: 100vh; */
-
+  width: 100%;
 }
+
 
 button {
   margin: 10px;
   padding: 8px 16px;
   font-size: 16px;
   cursor: pointer;
+}
+#editor-container html, #editor-container body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#editor-container {
+  flex-grow: 1; /* Makes it fill available space */
 }

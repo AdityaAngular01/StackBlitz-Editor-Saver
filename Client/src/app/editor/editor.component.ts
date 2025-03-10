@@ -26,28 +26,6 @@ export class EditorComponent implements OnInit {
     this.loadProject();
   }
 
-  // Load project from backend
-  // loadProject() {
-  //   this.http
-  //     .get<any>(
-  //       `http://localhost:3000/get-project/${this.userId}/${this.projectName}`
-  //     )
-  //     .subscribe(
-  //       (response) => {
-  //         if (response.success && response.stackblitzData?.files) {
-  //           this.stackblitzData = response.stackblitzData;
-  //           sdk.openProject(this.stackblitzData); // Open saved project
-  //         } else {
-  //           this.createNewProject(); // If no saved project, fork from URL
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error('Error loading project:', error);
-  //         this.createNewProject(); // Fallback if project not found
-  //       }
-  //     );
-  // }
-
   loadProject() {
     this.http
       .get<any>(
@@ -70,7 +48,7 @@ export class EditorComponent implements OnInit {
           }
         },
         (error) => {
-          console.error('Error loading project:', error);
+          console.warn('Error loading project:', error);
           this.createNewProject();
         }
       );
@@ -99,37 +77,6 @@ export class EditorComponent implements OnInit {
       .catch((error) => console.error('Error embedding project:', error));
   }
 
-  // Save project to backend
-  // saveProject() {
-  //   sdk
-  //     .embedProjectId('editor-container', 'stackblitz-starters-pa68qm8s')
-  //     .then((editor) => {
-  //       return editor.getFsSnapshot(); // Fetch updated files
-  //     })
-  //     .then((files) => {
-  //       this.stackblitzData.files = files; // Store updated files
-
-  //       console.log('Saving updated files:', this.stackblitzData.files); // Debugging
-
-  //       this.http
-  //         .post('http://localhost:3000/save-project', {
-  //           userId: this.userId,
-  //           projectName: this.projectName,
-  //           stackblitzData: this.stackblitzData,
-  //         })
-  //         .subscribe(
-  //           (response) => {
-  //             console.log('Project saved successfully:', response);
-  //           },
-  //           (error) => {
-  //             console.error('Error saving project:', error);
-  //           }
-  //         );
-  //     })
-  //     .catch((error) =>
-  //       console.error('Error retrieving StackBlitz files:', error)
-  //     );
-  // }
   saveProject() {
     sdk
       .connect(document.getElementById('editor-container') as HTMLIFrameElement)
@@ -141,7 +88,7 @@ export class EditorComponent implements OnInit {
           files,
           title: 'Updated StackBlitz Project',
           description: 'Project with latest changes',
-          template: 'angular-cli', // Ensure correct template
+          template: this.detectProjectTemplate(files), // Ensure correct template
         };
 
         console.log('Saving updated files:', this.stackblitzData.files); // Debugging
